@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  wireguard:
+    image: lscr.io/linuxserver/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Asia/Shanghai
+      - SERVERURL=wire.975995.xyz  # 
+      - SERVERPORT=51820  # WireGuard 服务监听端口（UDP）
+      - PEERS=honor,mech  # 预生成的客户端配置数量
+      - PEERDNS=192.168.5.1  # 路由器网关
+      - INTERNAL_SUBNET=10.13.13.0 # 内部 VPN 网络的 IP 段
+      - ALLOWEDIPS=0.0.0.0/0  # 允许客户端访问的 IP 范围
+      - PERSISTENTKEEPALIVE_PEERS=
+      - LOG_CONFS=true
+    volumes:
+      - ./config:/config  # 挂载配置目录，保存 WireGuard 配置文件和客户端配置
+      - /lib/modules:/lib/modules  # 挂载宿主机内核模块（可选，若使用用户空间实现可省略）
+    ports:
+      - 51820:51820/udp  #WireGuard 端口
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv4.ip_forward=1
+    restart: unless-stopped
