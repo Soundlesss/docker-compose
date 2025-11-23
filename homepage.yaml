@@ -13,4 +13,5 @@ services:
       - ./docker.sock:/var/run/docker.sock # optional, for docker integrations
       - ./icons:/app/public/icons
       - ./images:/app/public/images
-    restart: unless-stopped
+
+    restart: always
