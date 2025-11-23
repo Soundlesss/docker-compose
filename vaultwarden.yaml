@@ -1,0 +1,11 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: always
+    environment:
+      DOMAIN: "https://mima.975995.xyz"
+    volumes:
+      - ./vault-data:/data
+    ports:
+      - 5680:80
