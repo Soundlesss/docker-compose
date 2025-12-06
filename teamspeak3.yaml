@@ -1,0 +1,43 @@
+services:
+  teamspeak:
+    image: teamspeak:latest
+    container_name: teamspeak
+    restart: always
+    environment:
+      - TS3SERVER_LICENSE=accept
+      - TS3SERVER_DB_PLUGIN=ts3db_mariadb
+      - TS3SERVER_DB_SQLCREATEPATH=create_mariadb
+      - TS3SERVER_DB_HOST=db
+      - TS3SERVER_DB_USER=teamspeak
+      - TS3SERVER_DB_PASSWORD=${DB_PASSWORD:-teamspeak}
+      - TS3SERVER_DB_NAME=teamspeak
+      - TS3SERVER_DB_WAITUNTILREADY=30
+    volumes:
+      - ./data:/var/ts3server
+      - ./logs:/var/ts3server/logs
+    ports:
+      - "9987:9987/udp"   # 语音数据传输
+      - "10011:10011/tcp" # 服务器查询
+      - "30033:30033/tcp" # 文件传输
+    depends_on:
+      - db
+    networks:
+      - teamspeak-net
+
+  db:
+    image: mariadb:latest
+    container_name: teamspeak-db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-rootpassword}
+      - MYSQL_DATABASE=teamspeak
+      - MYSQL_USER=teamspeak
+      - MYSQL_PASSWORD=${DB_PASSWORD:-teamspeak}
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - teamspeak-net
+
+networks:
+  teamspeak-net:
+    driver: bridge
