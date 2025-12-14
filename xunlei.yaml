@@ -1,0 +1,11 @@
+services:
+  xunlei:
+    image: cnk3x/xunlei
+    container_name: xunlei
+    privileged: true
+    ports:
+      - 2345:2345
+    volumes:
+      - /vol2/1000/downloads/xunlei:/xunlei/downloads
+      - ./data:/xunlei/data
+    restart: unless-stopped
