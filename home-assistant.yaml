@@ -1,0 +1,11 @@
+services:
+  homeassistant:
+    image: homeassistant/home-assistant:latest
+    container_name: home-assistant
+    network_mode: host
+    volumes:
+      - ./config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    privileged: true
+    restart: always
