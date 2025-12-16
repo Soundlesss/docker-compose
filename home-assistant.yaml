@@ -9,3 +9,5 @@ services:
       - /run/dbus:/run/dbus:ro
     privileged: true
     restart: always
+    environment:
+      TZ: Asia/Shanghai
