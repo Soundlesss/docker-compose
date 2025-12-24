@@ -2,7 +2,7 @@ services:
   adguardhome:
     image: adguard/adguardhome:latest
     container_name: adguardhome
-    restart: unless-stopped
+    restart: always
     network_mode: host
     volumes:
       - ./work:/opt/adguardhome/work
